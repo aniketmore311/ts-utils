@@ -1,5 +1,6 @@
 import { Logger, makeConsoleStrategy, makeFileStrategy } from "./Logger";
 import { JsonDB } from './JsonDB'
+import { loadenv } from './loadenv'
 import c from './colors'
 
 (async () => {
@@ -16,6 +17,10 @@ import c from './colors'
   logger.warning('hello world')
   logger.error('hello world')
 
+  //loading env vars
+  loadenv('.env.json')
+  logger.debug(`PORT - ${process.env.PORT}`)
+
   //using json database
   interface IDbData { users: { username: string, passoword: string }[] }
   const db = new JsonDB<IDbData>({
@@ -27,5 +32,7 @@ import c from './colors'
   await db.read() //updates db.data property
   db.data.users.push({ username: "aniket", passoword: "password123" })
   await db.write() // saves db.data to file
-  logger.debug('db state',{state: db.data})
+  logger.debug('db state', { state: db.data })
+
+
 })()
