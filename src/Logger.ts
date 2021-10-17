@@ -41,9 +41,9 @@ export class Logger {
   ): Promise<void> {
     const timeStamp = new Date();
     if (logLevelMap[logLevel] >= logLevelMap[this.logLevel]) {
-      for (const strategy of this.strategies) {
+      await Promise.all(this.strategies.map(async (strategy) => {
         await strategy({ message, logLevel, logObj, timeStamp });
-      }
+      }))
     }
   }
 
