@@ -10,16 +10,17 @@ import c from './colors'
   })
   logger.addStrategy(makeConsoleStrategy())
   logger.addStrategy(makeFileStrategy('app.json.log'))
-
-  // using colors
-  logger.info(c.brightGreen('this is bright green'))
+  logger.info('hello world', { data: { hello: "world" } })
   logger.debug('hello world')
   logger.warning('hello world')
   logger.error('hello world')
 
+  // using colors
+  console.log(c.brightGreen('this is bright green'))
+
   //loading env vars
   loadenv('.env.json')
-  logger.debug(`PORT - ${process.env.PORT}`)
+  console.log(`PORT - ${process.env.PORT}`)
 
   //using json database
   interface IDbData { users: { username: string, passoword: string }[] }
@@ -32,7 +33,6 @@ import c from './colors'
   await db.read() //updates db.data property
   db.data.users.push({ username: "aniket", passoword: "password123" })
   await db.write() // saves db.data to file
-  logger.debug('db state', { state: db.data })
-
+  console.log(db.data)
 
 })()
