@@ -7,13 +7,13 @@ export class JsonDB<T> {
 
   constructor({
     path,
-    initObj
+    initState
   }: {
     path: string,
-    initObj: T
+    initState: T
   }) {
     this.path = path
-    this.data = initObj
+    this.data = initState
     if (!fs.existsSync(path)) {
       fs.writeFileSync(path, JSON.stringify(this.data))
     }

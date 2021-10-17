@@ -32,7 +32,7 @@ import c from './colors'
   interface IDbData { users: { username: string, passoword: string }[] }
   const db = new JsonDB<IDbData>({
     path: "db.json",
-    initObj: {
+    initState: {
       users: []
     }
   })
