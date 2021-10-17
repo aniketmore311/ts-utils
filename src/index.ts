@@ -15,8 +15,8 @@ import c from './colors'
   // file strategy will append json logs to a file
   logger.addStrategy(makeFileStrategy('app.json.log'))
   // the extra object is printed on terminal and appended to the json log object in the file
-  logger.info('hello world', { data: { hello: "world" } })
-  logger.debug('hello world')
+  logger.debug('hello world', { data: { hello: "world" } })
+  logger.info('hello world')
   logger.warning('hello world')
   logger.error('hello world')
 
