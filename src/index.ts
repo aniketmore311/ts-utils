@@ -28,7 +28,7 @@ import c from './colors'
   console.log(`PORT - ${process.env.PORT}`)
 
   //using json database
-  // defining shape of database
+  //defining shape of database
   interface IDbData { users: { username: string, passoword: string }[] }
   const db = new JsonDB<IDbData>({
     path: "db.json",
