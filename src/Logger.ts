@@ -1,9 +1,5 @@
 import { promises as fsp } from 'fs';
 
-type ILogLevel = "debug" | "info" | "warning" | "error";
-
-type IObjectType = { [key: string]: any }
-
 const logLevelMap = {
   debug: 0,
   info: 1,
@@ -11,15 +7,18 @@ const logLevelMap = {
   error: 3,
 };
 
+export type ILogLevel = "debug" | "info" | "warning" | "error";
 
-type ILogInfo = {
+export type IObjectType = { [key: string]: any }
+
+export type ILogInfo = {
   message: string;
   logLevel: ILogLevel;
   timeStamp: Date;
   logObj?: IObjectType;
 };
 
-type IStrategy = (logInfo: ILogInfo) => Promise<void>;
+export type IStrategy = (logInfo: ILogInfo) => Promise<void>;
 
 export class Logger {
   private logLevel: ILogLevel;
