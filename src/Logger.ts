@@ -42,9 +42,13 @@ export class Logger {
   ): Promise<void> {
     const timeStamp = new Date();
     if (logLevelMap[logLevel] >= logLevelMap[this.logLevel]) {
-      await Promise.all(this.strategies.map(async (strategy) => {
-        await strategy({ message, logLevel, logObj, timeStamp });
-      })).catch(err => { throw err })
+      try {
+        await Promise.all(this.strategies.map(async (strategy) => {
+          await strategy({ message, logLevel, logObj, timeStamp });
+        }))
+      } catch (err) {
+        throw err
+      }
     }
   }
 
