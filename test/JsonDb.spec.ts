@@ -45,3 +45,14 @@ t.test('should read data properly after writing', async (ct) => {
   fs.promises.unlink('test.db3.json')
   ct.end()
 })
+
+t.test('should update local state when initialized', async (ct) => {
+  let initState: { users: { name: string }[] } = { users: [{ name: "aniket" }] }
+  const db = new JsonDB<{ users: { name: string }[] }>({
+    initState: initState,
+    path: "test.db4.json"
+  })
+  ct.same(db.data, { users: [{ name: "aniket" }] })
+  fs.promises.unlink('test.db4.json')
+  ct.end()
+})

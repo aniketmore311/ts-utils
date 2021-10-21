@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node src/index.ts",
     "build": "tsc",
-    "test": "tap --ts --no-coverage"
+    "test": "tap --ts --no-coverage --reporter=spec"
   },
   "keywords": [],
   "author": "",
