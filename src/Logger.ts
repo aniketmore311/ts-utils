@@ -1,4 +1,5 @@
 import { promises as fsp } from 'fs';
+import os from 'os'
 
 const logLevelMap = {
   debug: 0,
@@ -72,7 +73,7 @@ export function makeFileStrategy(filePath: string): IStrategy {
       timestamp: logInfo.timeStamp.toISOString(),
       ...logInfo.logObj,
     };
-    await fsp.appendFile(filePath, JSON.stringify(logItem) + '\n');
+    await fsp.appendFile(filePath, JSON.stringify(logItem) + os.EOL);
   };
 }
 
@@ -85,10 +86,10 @@ export function makeConsoleStrategy(): IStrategy {
     reset: '\x1b[0m',
   };
   return async function (logInfo: ILogInfo) {
-    let logObjStr: string = logInfo.logObj === undefined ? "" : JSON.stringify(logInfo.logObj, null, 2) + "\n";
+    let logObjStr: string = logInfo.logObj === undefined ? "" : JSON.stringify(logInfo.logObj, null, 2) + os.EOL;
     process.stdout.write(
       `${levelColorMap[logInfo.logLevel]}${logInfo.logLevel.toUpperCase()}\t:${levelColorMap['reset']
-      } ${logInfo.message}\n${logObjStr}`,
+      } ${logInfo.message}${os.EOL}${logObjStr}`,
       'utf-8'
     );
   };
