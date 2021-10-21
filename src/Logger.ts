@@ -25,10 +25,11 @@ export class Logger {
   private logLevel: ILogLevel;
   private strategies: IStrategy[] = [];
 
-  constructor({
-    logLevel
-  }: { logLevel: ILogLevel }) {
-    this.logLevel = logLevel || 'info';
+  constructor(opts?: { logLevel: ILogLevel }) {
+    this.logLevel = "debug";
+    if (opts && opts.logLevel) {
+      this.logLevel = opts.logLevel
+    }
   }
 
   public addStrategy(strategy: IStrategy): void {
@@ -69,19 +70,31 @@ export class Logger {
   }
 }
 
-export function makeFileStrategy(filePath: string): IStrategy {
+export type FileStrategyOpts = { logLevel: ILogLevel }
+export function makeFileStrategy(filePath: string, opts?: FileStrategyOpts): IStrategy {
+  let loglevel: ILogLevel = "debug"
+  if (opts && opts.logLevel) {
+    loglevel = opts.logLevel
+  }
   return async function (logInfo: ILogInfo) {
-    const logItem = {
-      msg: logInfo.message,
-      level: logInfo.logLevel,
-      timestamp: logInfo.timeStamp.toISOString(),
-      ...logInfo.logObj,
-    };
-    await fsp.appendFile(filePath, JSON.stringify(logItem) + os.EOL);
+    if (logLevelMap[logInfo.logLevel] >= logLevelMap[loglevel]) {
+      const logItem = {
+        msg: logInfo.message,
+        level: logInfo.logLevel,
+        timestamp: logInfo.timeStamp.toISOString(),
+        ...logInfo.logObj,
+      };
+      await fsp.appendFile(filePath, JSON.stringify(logItem) + os.EOL);
+    }
   };
 }
 
-export function makeConsoleStrategy(): IStrategy {
+export type ConsoleStrategyOpts = { logLevel: ILogLevel }
+export function makeConsoleStrategy(opts?: ConsoleStrategyOpts): IStrategy {
+  let loglevel: ILogLevel = "debug"
+  if (opts && opts.logLevel) {
+    loglevel = opts.logLevel
+  }
   const levelColorMap = {
     debug: '\x1b[32m',
     info: '\x1b[36m',
@@ -90,11 +103,13 @@ export function makeConsoleStrategy(): IStrategy {
     reset: '\x1b[0m',
   };
   return async function (logInfo: ILogInfo) {
-    let logObjStr: string = logInfo.logObj === undefined ? "" : JSON.stringify(logInfo.logObj, null, 2) + os.EOL;
-    process.stdout.write(
-      `${levelColorMap[logInfo.logLevel]}${logInfo.logLevel.toUpperCase()}\t:${levelColorMap['reset']
-      } ${logInfo.message}${os.EOL}${logObjStr}`,
-      'utf-8'
-    );
+    if (logLevelMap[logInfo.logLevel] >= logLevelMap[loglevel]) {
+      let logObjStr: string = logInfo.logObj === undefined ? "" : JSON.stringify(logInfo.logObj, null, 2) + os.EOL;
+      process.stdout.write(
+        `${levelColorMap[logInfo.logLevel]}${logInfo.logLevel.toUpperCase()}\t:${levelColorMap['reset']
+        } ${logInfo.message}${os.EOL}${logObjStr}`,
+        'utf-8'
+      );
+    }
   };
 }
