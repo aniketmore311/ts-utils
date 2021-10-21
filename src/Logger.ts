@@ -44,7 +44,7 @@ export class Logger {
     if (logLevelMap[logLevel] >= logLevelMap[this.logLevel]) {
       await Promise.all(this.strategies.map(async (strategy) => {
         await strategy({ message, logLevel, logObj, timeStamp });
-      }))
+      })).catch(err => { throw err })
     }
   }
 
