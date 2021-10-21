@@ -12,9 +12,9 @@ import c from './colors'
   logger.addStrategy(makeConsoleStrategy())
   // file strategy will append json logs to a file
   // use options to add log level to strategy
-  // logger.addStrategy(makeFileStrategy('app.json.log', {
-  //   logLevel: "error"
-  // }))
+  logger.addStrategy(makeFileStrategy('app.json.log', {
+    logLevel: "error"
+  }))
   // the extra object is printed on terminal and appended to the json log object in the file
   logger.debug('hello world', { data: { hello: "world" } })
   logger.info('hello world')
