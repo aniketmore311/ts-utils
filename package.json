@@ -5,13 +5,16 @@
   "main": "colors.js",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "tap --ts --no-coverage"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^16.11.1",
+    "@types/tap": "^15.0.5",
+    "tap": "^15.0.10",
     "ts-node": "^10.3.0",
     "typescript": "^4.4.4"
   }

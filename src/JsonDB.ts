@@ -13,7 +13,7 @@ export class JsonDB<T> {
     initState: T
   }) {
     this.path = path
-    this.data = initState
+    this.data = Object.assign({}, initState)
     if (!fs.existsSync(path)) {
       fs.writeFileSync(path, JSON.stringify(this.data))
     }
